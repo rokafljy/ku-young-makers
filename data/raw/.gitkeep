@@ -1,0 +1,4 @@
+# 안내자료 원본 디렉토리
+# 이 폴더에 지침/매뉴얼/2025 Q&A PDF·DOCX 파일을 업로드한 뒤
+# `python scripts/ingest.py`를 실행하세요.
+# HWP 파일은 PDF로 변환해 주세요.
