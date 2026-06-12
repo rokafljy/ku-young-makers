@@ -5,8 +5,15 @@ import Footer from '@/components/Footer'
 import RevealObserver from '@/components/RevealObserver'
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://ku-young-makers.netlify.app'),
   title: 'KU YOUNG MAKERS | 2026 미래내일 일경험 지원사업',
   description: '건국대학교 KU YOUNG MAKERS — 기업 실전 프로젝트 8주, 일경험이 커리어가 되는 시간',
+  openGraph: {
+    title: 'KU YOUNG MAKERS | 2026 미래내일 일경험 지원사업',
+    description: '기업 실전 프로젝트 8주, 일경험이 커리어가 되는 시간. 건국대학교 KU-KISM 운영.',
+    locale: 'ko_KR',
+    type: 'website',
+  },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

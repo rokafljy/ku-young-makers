@@ -41,7 +41,8 @@ export default function Footer() {
                 <b>지원</b>
                 <Link href="/notice">공지사항</Link>
                 <Link href="/qna">Q&A</Link>
-                <Link href="/status">지원현황 조회</Link>
+                <Link href="/mypage">마이페이지</Link>
+                <Link href="/privacy">개인정보처리방침</Link>
               </div>
             </div>
           </div>

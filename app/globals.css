@@ -236,6 +236,7 @@ header.scrolled .hamburger{color:var(--ink)}
 .gal-grid{margin-top:54px;display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
 .gal{aspect-ratio:1;border-radius:16px;overflow:hidden;position:relative;background:linear-gradient(135deg,#dfe8d8,#c5d4bb);display:grid;place-items:center;color:var(--ink-soft);font-size:13px;font-weight:600;transition:transform .2s}
 .gal:hover{transform:scale(1.02)}
+.gal img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .gal:nth-child(1){grid-row:span 2;aspect-ratio:auto}
 .gal:nth-child(4){grid-column:span 2;aspect-ratio:auto}
 
@@ -274,6 +275,67 @@ footer{background:var(--ink);color:rgba(255,255,255,.6);padding:70px 0 40px;font
 .form-note{font-size:13px;color:var(--ink-soft)}
 .form-done{background:#fff;border:1px dashed var(--green);border-radius:var(--radius);padding:30px;font-size:15px;font-weight:600;margin-top:14px;max-width:680px}
 
+/* consent checkbox */
+.check-row{display:flex;gap:10px;align-items:flex-start;font-size:14px;cursor:pointer;max-width:680px}
+.check-row input{width:17px;height:17px;margin-top:3px;accent-color:var(--green);flex-shrink:0}
+
+/* status badge */
+.st{display:inline-block;padding:5px 14px;border-radius:999px;font-size:12.5px;font-weight:700;white-space:nowrap}
+.st.pending{background:#fff3cd;color:#7a5d00}
+.st.approved{background:rgba(11,107,58,.12);color:var(--green)}
+.st.rejected,.st.withdrawn{background:#fdecea;color:#a4262c}
+
+/* mypage */
+.mp-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:30px;margin-bottom:20px}
+.mp-head{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:14px;flex-wrap:wrap}
+.mp-head h2{font-size:19px;font-weight:800;letter-spacing:-.01em}
+.mp-list{display:flex;flex-direction:column}
+.mp-row{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:14px 0;border-bottom:1px solid var(--line)}
+.mp-row:last-child{border-bottom:none}
+.mp-row b{display:block;font-size:15px}
+.mp-row small{color:var(--ink-soft);font-size:13px}
+.mp-qa{padding:14px 0;border-bottom:1px solid var(--line);font-size:14.5px}
+.mp-qa:last-child{border-bottom:none}
+.mp-answer{margin-top:8px;padding:12px 16px;background:rgba(11,107,58,.06);border-radius:12px;color:var(--ink-soft)}
+.mp-actions{display:flex;gap:12px;margin-top:8px;flex-wrap:wrap}
+
+/* admin */
+.admin-layout{display:grid;grid-template-columns:210px 1fr;gap:36px;align-items:start}
+.admin-nav{position:sticky;top:96px;display:flex;flex-direction:column;gap:2px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:12px;font-size:14px}
+.admin-nav a{padding:10px 14px;border-radius:10px;font-weight:600;color:var(--ink-soft);transition:background .15s,color .15s}
+.admin-nav a:hover{background:rgba(11,107,58,.06);color:var(--ink)}
+.admin-nav a.active{background:var(--ink);color:#fff}
+.admin-nav .nav-sec{font-size:11.5px;font-weight:800;letter-spacing:.08em;color:var(--ink-soft);padding:14px 14px 4px;text-transform:uppercase}
+.admin-table{width:100%;border-collapse:collapse;background:#fff;border:1px solid var(--line);border-radius:16px;overflow:hidden;font-size:14px}
+.admin-table th{text-align:left;padding:13px 16px;background:var(--paper);font-size:12.5px;font-weight:800;letter-spacing:.04em;color:var(--ink-soft);border-bottom:1px solid var(--line)}
+.admin-table td{padding:13px 16px;border-bottom:1px solid var(--line);vertical-align:middle}
+.admin-table tr:last-child td{border-bottom:none}
+.admin-table .row-actions{display:flex;gap:8px;flex-wrap:wrap}
+.btn-sm{padding:7px 14px;font-size:12.5px;border-radius:999px;font-weight:700;cursor:pointer;border:1.5px solid var(--line);background:#fff;transition:border-color .15s}
+.btn-sm:hover{border-color:var(--green)}
+.btn-sm.primary{background:var(--green);color:#fff;border-color:var(--green)}
+.btn-sm.danger{color:#a4262c}
+.btn-sm.danger:hover{border-color:#a4262c}
+.admin-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.admin-stat{background:#fff;border:1px solid var(--line);border-radius:16px;padding:24px}
+.admin-stat b{font-family:var(--display);font-size:34px;font-weight:900;color:var(--green)}
+.admin-stat small{display:block;margin-top:4px;font-size:13.5px;color:var(--ink-soft)}
+.admin-form{background:#fff;border:1px solid var(--line);border-radius:16px;padding:24px;margin-bottom:24px}
+.admin-form h3{font-size:16px;font-weight:800;margin-bottom:16px}
+.admin-detail{white-space:pre-wrap;font-size:14px;background:var(--paper);border-radius:12px;padding:16px;margin-top:8px}
+
+/* D-day banner */
+.dday-banner{position:relative;z-index:2;display:flex;align-items:center;justify-content:center;gap:14px;background:var(--lime);color:var(--ink);padding:13px 24px;font-weight:700;font-size:14.5px;flex-wrap:wrap;text-align:center}
+.dday-banner b{font-family:var(--display);font-weight:900;font-size:16px}
+
+/* reviews */
+.review-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:54px}
+.review-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:30px;display:flex;flex-direction:column;gap:14px}
+.review-card .quote{font-family:var(--display);font-size:30px;font-weight:900;color:var(--green);line-height:1}
+.review-card p{font-size:14.5px;color:var(--ink-soft);flex:1}
+.review-card .who{font-size:13.5px;font-weight:700}
+.review-card .who small{display:block;font-weight:500;color:var(--ink-soft);margin-top:2px}
+
 /* notice detail */
 .notice-detail{max-width:760px}
 .notice-detail h1{font-size:clamp(24px,3vw,34px);font-weight:800;letter-spacing:-.02em}
@@ -290,6 +352,11 @@ footer{background:var(--ink);color:rgba(255,255,255,.6);padding:70px 0 40px;font
 @media (max-width:960px){
   .menu,.nav .apply,.status-link{display:none}
   .hamburger{display:block}
+  .admin-layout{grid-template-columns:1fr}
+  .admin-nav{position:static;flex-direction:row;flex-wrap:wrap}
+  .admin-nav .nav-sec{width:100%;padding:10px 14px 2px}
+  .review-grid{grid-template-columns:repeat(2,1fr)}
+  .admin-stats{grid-template-columns:1fr}
   .bento{grid-template-columns:repeat(2,1fr)}
   .co-grid,.vid-grid{grid-template-columns:repeat(2,1fr)}
   .dual,.nf-grid{grid-template-columns:1fr}
@@ -309,4 +376,6 @@ footer{background:var(--ink);color:rgba(255,255,255,.6);padding:70px 0 40px;font
   .gal:nth-child(n){grid-row:auto;grid-column:auto;aspect-ratio:16/10}
   .form-grid2{grid-template-columns:1fr}
   .page-main{padding:48px 0 72px}
+  .review-grid{grid-template-columns:1fr}
+  .admin-table{display:block;overflow-x:auto}
 }

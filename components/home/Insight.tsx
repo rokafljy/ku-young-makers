@@ -1,6 +1,8 @@
-import { videos } from '@/lib/data'
+import { getVideos, getSetting } from '@/lib/content'
 
-export default function Insight() {
+export default async function Insight() {
+  const [videos, channel] = await Promise.all([getVideos(), getSetting('youtube_channel')])
+
   return (
     <section id="insight" style={{ background: '#fff' }}>
       <div className="wrap">
@@ -9,11 +11,13 @@ export default function Insight() {
             <span className="eyebrow">Insight</span>
             <h2 className="sec-title">취업역량을 키우는<br />교육 &amp; 인사이트</h2>
           </div>
-          <a href="#" className="more-link">유튜브 채널 전체 보기 →</a>
+          <a href={channel || '#'} className="more-link" target={channel ? '_blank' : undefined}>
+            유튜브 채널 전체 보기 →
+          </a>
         </div>
         <div className="vid-grid reveal">
-          {videos.map(v => (
-            <div className="vid" key={v.title}>
+          {videos.slice(0, 3).map(v => (
+            <div className="vid" key={v.id}>
               <div className="thumb">
                 {v.videoId ? (
                   <iframe

@@ -1,8 +1,20 @@
 import Link from 'next/link'
 import { companies } from '@/lib/data'
+import { getSetting } from '@/lib/content'
 
-export default function Hero() {
+function ddayLabel(end: string): string | null {
+  if (!end) return null
+  const endDate = new Date(`${end}T23:59:59+09:00`)
+  if (isNaN(endDate.getTime())) return null
+  const days = Math.floor((endDate.getTime() - Date.now()) / 86400000)
+  if (days < 0) return null
+  return days === 0 ? 'D-DAY' : `D-${days}`
+}
+
+export default async function Hero() {
   const names = companies.map(c => c.name)
+  const recruitEnd = await getSetting('recruit_end')
+  const dday = ddayLabel(recruitEnd)
   return (
     <div className="hero">
       <div className="hero-bg" aria-hidden="true">
@@ -36,6 +48,11 @@ export default function Hero() {
         </div>
       </div>
       <div className="scroll-cue">SCROLL</div>
+      {dday && (
+        <Link href="/apply" className="dday-banner">
+          📢 2026 참여자 모집 마감까지 <b>{dday}</b> — 지금 지원하기 →
+        </Link>
+      )}
       <div className="marquee" aria-hidden="true">
         <div className="marquee-track">
           {[...names, ...names].map((name, i) => (

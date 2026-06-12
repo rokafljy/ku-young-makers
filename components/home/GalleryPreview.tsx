@@ -1,7 +1,9 @@
 import Link from 'next/link'
-import { galleryItems } from '@/lib/data'
+import { getGallery } from '@/lib/content'
 
-export default function GalleryPreview() {
+export default async function GalleryPreview() {
+  const items = await getGallery()
+
   return (
     <section id="gallery">
       <div className="wrap">
@@ -13,8 +15,13 @@ export default function GalleryPreview() {
           <Link href="/gallery" className="more-link">갤러리 전체 보기 →</Link>
         </div>
         <div className="gal-grid reveal">
-          {galleryItems.map(g => (
-            <div className="gal" key={g}>{g}</div>
+          {items.slice(0, 7).map(g => (
+            <div className="gal" key={g.id}>
+              {g.imageUrl
+                ? // eslint-disable-next-line @next/next/no-img-element
+                  <img src={g.imageUrl} alt={g.label} />
+                : g.label}
+            </div>
           ))}
         </div>
       </div>

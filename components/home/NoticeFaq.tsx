@@ -1,7 +1,14 @@
 import Link from 'next/link'
-import { faqs, notices } from '@/lib/data'
+import { faqs } from '@/lib/data'
+import { getNotices, getSetting } from '@/lib/content'
 
-export default function NoticeFaq() {
+export default async function NoticeFaq() {
+  const [notices, phone, email] = await Promise.all([
+    getNotices(),
+    getSetting('contact_phone', '02-000-0000'),
+    getSetting('contact_email', 'kym@konkuk.ac.kr (업데이트)'),
+  ])
+
   return (
     <section id="notice" style={{ background: '#fff' }}>
       <div className="wrap">
@@ -12,7 +19,7 @@ export default function NoticeFaq() {
         <div className="nf-grid reveal">
           <div>
             <div className="notice-list">
-              {notices.map(n => (
+              {notices.slice(0, 5).map(n => (
                 <Link href={`/notice/${n.id}`} key={n.id}>
                   <span>
                     {n.pinned && <span className="pin">★</span>}
@@ -43,8 +50,8 @@ export default function NoticeFaq() {
         <div className="contact-strip reveal">
           <p>📞 문의처 — 건국대학교 한국지속가능경영연구원</p>
           <div className="c-info">
-            <span><b>전화</b> 02-000-0000</span>
-            <span><b>이메일</b> kym@konkuk.ac.kr (업데이트)</span>
+            <span><b>전화</b> {phone}</span>
+            <span><b>이메일</b> {email}</span>
           </div>
         </div>
       </div>

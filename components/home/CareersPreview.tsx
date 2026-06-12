@@ -1,7 +1,9 @@
 import Link from 'next/link'
-import { jobs } from '@/lib/data'
+import { getJobs } from '@/lib/content'
 
-export default function CareersPreview() {
+export default async function CareersPreview() {
+  const jobs = await getJobs()
+
   return (
     <section id="careers">
       <div className="wrap">
@@ -13,7 +15,7 @@ export default function CareersPreview() {
           <Link href="/careers" className="more-link">전체 공고 보기 →</Link>
         </div>
         <div className="job-list reveal">
-          {jobs.map(j => (
+          {jobs.slice(0, 3).map(j => (
             <Link className="job" href="/careers" key={j.id}>
               <div>
                 <div className="co-name">{j.company}</div>

@@ -1,13 +1,23 @@
 'use client'
 
+import Link from 'next/link'
 import { useActionState } from 'react'
 import { submitYouthApplication } from '@/app/actions'
 
-export default function YouthApplyForm() {
+type Defaults = { name: string; phone: string; email: string; school: string }
+
+export default function YouthApplyForm({ defaults }: { defaults: Defaults }) {
   const [result, formAction, pending] = useActionState(submitYouthApplication, null)
 
   if (result?.ok) {
-    return <div className="form-done">✅ {result.message}</div>
+    return (
+      <div className="form-done">
+        ✅ {result.message}
+        <p style={{ marginTop: 12 }}>
+          <Link href="/mypage" className="more-link">마이페이지에서 확인하기 →</Link>
+        </p>
+      </div>
+    )
   }
 
   return (
@@ -15,7 +25,7 @@ export default function YouthApplyForm() {
       <div className="form-grid2">
         <div className="field">
           <label htmlFor="y-name">이름 *</label>
-          <input id="y-name" name="name" required placeholder="홍길동" />
+          <input id="y-name" name="name" required defaultValue={defaults.name} />
         </div>
         <div className="field">
           <label htmlFor="y-birth">생년월일 *</label>
@@ -25,17 +35,17 @@ export default function YouthApplyForm() {
       <div className="form-grid2">
         <div className="field">
           <label htmlFor="y-phone">연락처 *</label>
-          <input id="y-phone" name="phone" type="tel" required placeholder="010-0000-0000" />
+          <input id="y-phone" name="phone" type="tel" required defaultValue={defaults.phone} />
         </div>
         <div className="field">
           <label htmlFor="y-email">이메일 *</label>
-          <input id="y-email" name="email" type="email" required placeholder="you@example.com" />
+          <input id="y-email" name="email" type="email" required defaultValue={defaults.email} />
         </div>
       </div>
       <div className="form-grid2">
         <div className="field">
           <label htmlFor="y-school">학교 / 전공</label>
-          <input id="y-school" name="school" placeholder="건국대학교 / 경영학과" />
+          <input id="y-school" name="school" defaultValue={defaults.school} />
         </div>
         <div className="field">
           <label htmlFor="y-state">현재 상태 *</label>
@@ -68,8 +78,15 @@ export default function YouthApplyForm() {
           placeholder="선정 이유, 수행 방법, 기대 성과를 자유롭게 작성해 주세요."
         />
       </div>
+      <label className="check-row">
+        <input type="checkbox" name="consent" required />
+        <span>
+          (필수) 개인정보 수집·이용에 동의합니다.{' '}
+          <Link href="/privacy" className="more-link" target="_blank">내용 보기</Link>
+        </span>
+      </label>
       <p className="form-note">
-        * 만 15~34세 미취업 청년(재학·휴학·졸업 무관)이 지원 대상입니다. 제출 전 자격을 확인해 주세요.
+        * 만 15~34세 미취업 청년(재학·휴학·졸업 무관)이 지원 대상입니다.
       </p>
       {result && !result.ok && <p className="form-note" role="alert">⚠️ {result.message}</p>}
       <button type="submit" className="btn btn-primary" disabled={pending}>

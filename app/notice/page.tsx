@@ -1,11 +1,14 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import PageHero from '@/components/PageHero'
-import { notices } from '@/lib/data'
+import { getNotices } from '@/lib/content'
 
 export const metadata: Metadata = { title: '공지사항 | KU YOUNG MAKERS' }
+export const revalidate = 60
 
-export default function NoticeListPage() {
+export default async function NoticeListPage() {
+  const notices = await getNotices()
+
   return (
     <>
       <PageHero eyebrow="Notice" title="공지사항" desc="KU YOUNG MAKERS의 최신 소식을 확인하세요." />

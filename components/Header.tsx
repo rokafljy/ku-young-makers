@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
+import { createClient } from '@/lib/supabase/client'
 
 const MENU = [
   { href: '/#about', label: '사업소개' },
@@ -18,6 +19,7 @@ export default function Header() {
   const pathname = usePathname()
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
+  const [loggedIn, setLoggedIn] = useState(false)
   // 서브페이지는 히어로가 짧아 헤더를 항상 불투명하게 유지
   const solid = pathname !== '/'
 
@@ -29,8 +31,18 @@ export default function Header() {
   }, [])
 
   useEffect(() => {
+    const supabase = createClient()
+    supabase.auth.getUser().then(({ data }) => setLoggedIn(!!data.user))
+    const { data: sub } = supabase.auth.onAuthStateChange((_e, session) => setLoggedIn(!!session?.user))
+    return () => sub.subscription.unsubscribe()
+  }, [])
+
+  useEffect(() => {
     setOpen(false)
   }, [pathname])
+
+  const accountHref = loggedIn ? '/mypage' : '/login'
+  const accountLabel = loggedIn ? '마이페이지' : '로그인'
 
   return (
     <header className={scrolled || solid || open ? 'scrolled' : ''}>
@@ -44,7 +56,7 @@ export default function Header() {
           ))}
         </nav>
         <div className="nav-right">
-          <Link href="/status" className="status-link">지원현황 조회</Link>
+          <Link href={accountHref} className="status-link">{accountLabel}</Link>
           <Link href="/apply" className="btn btn-primary apply">지원하기</Link>
           <button
             className="hamburger"
@@ -61,7 +73,7 @@ export default function Header() {
           {MENU.map(m => (
             <Link key={m.href} href={m.href} onClick={() => setOpen(false)}>{m.label}</Link>
           ))}
-          <Link href="/status" onClick={() => setOpen(false)}>지원현황 조회</Link>
+          <Link href={accountHref} onClick={() => setOpen(false)}>{accountLabel}</Link>
           <Link href="/apply" className="btn btn-primary" onClick={() => setOpen(false)}>지원하기</Link>
         </nav>
       )}
