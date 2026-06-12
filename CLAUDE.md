@@ -26,6 +26,7 @@
 - 정적 콘텐츠 데이터(공지·FAQ·채용·기업·영상)는 `lib/data.ts` 한곳에 모음
 
 ## 백엔드 — Supabase (유료 구독 중)
+- 연결된 프로젝트: young makers 조직 / `youngmakers_lotte` (ref: kypzebnhgtoldiiknmzq, 서울 리전) — 스키마 적용·연동 테스트 완료 (2026-06-12)
 - 접수·조회는 서버 액션(`app/actions.ts`) → Supabase. 클라이언트는 `lib/supabase.ts`
 - DB 스키마: `supabase/schema.sql` (대시보드 SQL Editor에서 실행)
   - youth_applications / company_applications / questions + RLS(익명은 insert만)
@@ -40,7 +41,7 @@
 - 관리자 페이지는 사용자 페이지 완성 후 추가 (예정: /admin — 접수·공지·채용 관리)
 
 ## TODO
-- [ ] Supabase 프로젝트에 `supabase/schema.sql` 실행 + `.env.local` 키 설정 (→ 폼 실접수 활성화)
+- [x] Supabase 스키마 실행 + `.env.local` 키 설정 — 폼 실접수 동작 확인됨
 - [ ] 유튜브 영상 ID 3개 삽입 (`lib/data.ts`의 videos[].videoId — 넣으면 자동 임베드)
 - [ ] 모집 일정·문의처 실데이터 반영
 - [ ] 갤러리 실사진 교체
