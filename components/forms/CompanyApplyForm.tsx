@@ -1,27 +1,17 @@
 'use client'
 
-import { FormEvent, useState } from 'react'
+import { useActionState } from 'react'
+import { submitCompanyApplication } from '@/app/actions'
 
-// TODO: Firebase(Firestore) 연동 시 onSubmit에서 실제 접수 처리
 export default function CompanyApplyForm() {
-  const [done, setDone] = useState(false)
+  const [result, formAction, pending] = useActionState(submitCompanyApplication, null)
 
-  function onSubmit(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault()
-    setDone(true)
-  }
-
-  if (done) {
-    return (
-      <div className="form-done">
-        ✅ 입력 내용이 확인되었습니다.<br />
-        현재는 프로토타입 단계로, 실제 접수는 Firebase 연동 후 제공됩니다. 빠른 상담이 필요하시면 문의처로 연락해 주세요.
-      </div>
-    )
+  if (result?.ok) {
+    return <div className="form-done">✅ {result.message}</div>
   }
 
   return (
-    <form className="form" onSubmit={onSubmit}>
+    <form className="form" action={formAction}>
       <div className="form-grid2">
         <div className="field">
           <label htmlFor="c-company">기업명 *</label>
@@ -56,7 +46,10 @@ export default function CompanyApplyForm() {
         />
       </div>
       <p className="form-note">* 참여기업은 상시 모집하며, 신청 후 운영사무국에서 과제 정의 상담을 진행합니다.</p>
-      <button type="submit" className="btn btn-dark">기업 참여 신청하기 →</button>
+      {result && !result.ok && <p className="form-note" role="alert">⚠️ {result.message}</p>}
+      <button type="submit" className="btn btn-dark" disabled={pending}>
+        {pending ? '신청 중…' : '기업 참여 신청하기 →'}
+      </button>
     </form>
   )
 }

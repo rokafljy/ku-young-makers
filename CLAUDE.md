@@ -23,18 +23,26 @@
 - `/apply` 청년 지원서 · `/apply/company` 기업 참여 신청
 - `/status` 지원현황 조회 · `/qna` FAQ+질문 남기기
 - `/notice`, `/notice/[id]` 공지사항 · `/careers` 채용 · `/gallery` 갤러리
-- 콘텐츠 데이터는 `lib/data.ts` 한곳에 모음 — Firebase 전환 시 이 모듈만 교체
+- 정적 콘텐츠 데이터(공지·FAQ·채용·기업·영상)는 `lib/data.ts` 한곳에 모음
+
+## 백엔드 — Supabase (유료 구독 중)
+- 접수·조회는 서버 액션(`app/actions.ts`) → Supabase. 클라이언트는 `lib/supabase.ts`
+- DB 스키마: `supabase/schema.sql` (대시보드 SQL Editor에서 실행)
+  - youth_applications / company_applications / questions + RLS(익명은 insert만)
+  - 지원현황 조회는 `lookup_application_status` 함수(security definer)로만
+- 환경변수: `.env.local`에 NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_ANON_KEY (`.env.example` 참고)
+  - 미설정 시 폼은 "연동 전" 안내로 안전하게 동작
+- 향후 확장 계획: 회원가입(Supabase Auth, @supabase/ssr 도입), 채용관리 시스템, 영메이커스 관리시스템 연동
 
 ## 작업 규칙
 - 모바일 반응형 유지 (브레이크포인트 680px / 960px / 1060px, 메뉴는 960px에서 햄버거 전환)
 - placeholder 표기("업데이트", "(예시)", "준비 중") 항목은 실데이터 입력 전까지 유지
-- 폼 제출은 현재 스텁(접수 안내 메시지) — Firebase(Firestore) 연동 예정 (ku-young-makers-21580과 별도 프로젝트 권장)
-- 관리자 페이지는 사용자 페이지 완성 후 추가 (예정: /admin — 공지·채용·접수 관리)
+- 관리자 페이지는 사용자 페이지 완성 후 추가 (예정: /admin — 접수·공지·채용 관리)
 
 ## TODO
+- [ ] Supabase 프로젝트에 `supabase/schema.sql` 실행 + `.env.local` 키 설정 (→ 폼 실접수 활성화)
 - [ ] 유튜브 영상 ID 3개 삽입 (`lib/data.ts`의 videos[].videoId — 넣으면 자동 임베드)
 - [ ] 모집 일정·문의처 실데이터 반영
 - [ ] 갤러리 실사진 교체
-- [ ] Firebase 연동 (지원서 접수 → 지원현황 조회 → Q&A 게시판 순)
-- [ ] 관리자 페이지 (/admin)
-- [ ] Netlify 배포
+- [ ] 회원가입(Supabase Auth) → 관리자 페이지(/admin) 순 개발
+- [ ] Netlify 배포 (환경변수 2개 등록 필요)

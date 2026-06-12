@@ -1,27 +1,17 @@
 'use client'
 
-import { FormEvent, useState } from 'react'
+import { useActionState } from 'react'
+import { submitYouthApplication } from '@/app/actions'
 
-// TODO: Firebase(Firestore) 연동 시 onSubmit에서 실제 접수 처리
 export default function YouthApplyForm() {
-  const [done, setDone] = useState(false)
+  const [result, formAction, pending] = useActionState(submitYouthApplication, null)
 
-  function onSubmit(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault()
-    setDone(true)
-  }
-
-  if (done) {
-    return (
-      <div className="form-done">
-        ✅ 입력 내용이 확인되었습니다.<br />
-        현재는 프로토타입 단계로, 실제 접수는 Firebase 연동 후 제공됩니다. 모집 시작 시 공지사항을 확인해 주세요.
-      </div>
-    )
+  if (result?.ok) {
+    return <div className="form-done">✅ {result.message}</div>
   }
 
   return (
-    <form className="form" onSubmit={onSubmit}>
+    <form className="form" action={formAction}>
       <div className="form-grid2">
         <div className="field">
           <label htmlFor="y-name">이름 *</label>
@@ -81,7 +71,10 @@ export default function YouthApplyForm() {
       <p className="form-note">
         * 만 15~34세 미취업 청년(재학·휴학·졸업 무관)이 지원 대상입니다. 제출 전 자격을 확인해 주세요.
       </p>
-      <button type="submit" className="btn btn-primary">지원서 제출하기 →</button>
+      {result && !result.ok && <p className="form-note" role="alert">⚠️ {result.message}</p>}
+      <button type="submit" className="btn btn-primary" disabled={pending}>
+        {pending ? '제출 중…' : '지원서 제출하기 →'}
+      </button>
     </form>
   )
 }

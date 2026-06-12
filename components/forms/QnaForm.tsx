@@ -1,27 +1,17 @@
 'use client'
 
-import { FormEvent, useState } from 'react'
+import { useActionState } from 'react'
+import { submitQuestion } from '@/app/actions'
 
-// TODO: Firebase(Firestore) 연동 시 Q&A 게시판으로 전환 (별도 프로젝트 권장 — CLAUDE.md)
 export default function QnaForm() {
-  const [done, setDone] = useState(false)
+  const [result, formAction, pending] = useActionState(submitQuestion, null)
 
-  function onSubmit(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault()
-    setDone(true)
-  }
-
-  if (done) {
-    return (
-      <div className="form-done">
-        ✅ 질문 내용이 확인되었습니다.<br />
-        현재는 프로토타입 단계로, Q&amp;A 게시판은 Firebase 연동 후 제공됩니다. 급한 문의는 문의처로 연락해 주세요.
-      </div>
-    )
+  if (result?.ok) {
+    return <div className="form-done">✅ {result.message}</div>
   }
 
   return (
-    <form className="form" onSubmit={onSubmit}>
+    <form className="form" action={formAction}>
       <div className="form-grid2">
         <div className="field">
           <label htmlFor="q-name">이름 *</label>
@@ -36,7 +26,10 @@ export default function QnaForm() {
         <label htmlFor="q-question">질문 내용 *</label>
         <textarea id="q-question" name="question" required placeholder="궁금한 점을 남겨 주세요." />
       </div>
-      <button type="submit" className="btn btn-primary">질문 남기기 →</button>
+      {result && !result.ok && <p className="form-note" role="alert">⚠️ {result.message}</p>}
+      <button type="submit" className="btn btn-primary" disabled={pending}>
+        {pending ? '등록 중…' : '질문 남기기 →'}
+      </button>
     </form>
   )
 }
