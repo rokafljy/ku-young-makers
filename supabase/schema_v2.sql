@@ -50,34 +50,9 @@ create policy "profiles select" on profiles for select to authenticated
 create policy "profiles update" on profiles for update to authenticated
   using (id = auth.uid() or is_admin());
 
--- ⚠️ [보안 강화 — 후속 적용 권장] ─────────────────────────────────────────
--- 현재 정책상 회원은 본인 profiles 행 전체를 수정할 수 있어, 이론상 자기 status를
--- 'approved'로 바꿔 승인 절차를 우회할 수 있습니다. 아래 구문을 실행하면 회원은
--- name/phone/school만 수정 가능해지고, status 변경은 관리자/탈회 함수로만 가능해집니다.
--- (적용 시 app/admin/members 의 setStatus 와 app/actions.ts 의 withdrawMembership 을
---  rpc 'admin_set_member_status' / 'withdraw_self' 호출로 함께 교체해야 합니다.)
---
--- revoke update on profiles from authenticated;
--- grant update (name, phone, school) on profiles to authenticated;
---
--- create or replace function admin_set_member_status(p_id uuid, p_status text)
--- returns void language plpgsql security definer set search_path = public as $$
--- begin
---   if not is_admin() then raise exception 'forbidden'; end if;
---   if p_status not in ('pending','approved','rejected','withdrawn') then
---     raise exception 'invalid status';
---   end if;
---   update profiles set status = p_status where id = p_id;
--- end; $$;
--- grant execute on function admin_set_member_status(uuid, text) to authenticated;
---
--- create or replace function withdraw_self()
--- returns void language plpgsql security definer set search_path = public as $$
--- begin
---   update profiles set status = 'withdrawn' where id = auth.uid();
--- end; $$;
--- grant execute on function withdraw_self() to authenticated;
--- ──────────────────────────────────────────────────────────────────────────
+-- ⚠️ [보안 강화] 회원의 status/role 자가변경 차단은 별도 파일에서 처리합니다.
+--    → supabase/admin_and_security.sql 의 트리거(guard_profile_changes)를 실행하세요.
+--    (코드 변경 불필요 — 기존 정보수정·탈회·관리자 승인 동작을 그대로 유지)
 
 -- ===== 2. 콘텐츠 테이블 (published = 노출/비노출) =====
 create table if not exists notices (

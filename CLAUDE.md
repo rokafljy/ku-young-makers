@@ -46,20 +46,21 @@
 - placeholder 표기 항목은 실데이터 입력 전까지 유지
 - Supabase 작업은 브라우저 SQL Editor로. ⚠️ supabase.com에서 Chrome 자동번역을 끄세요(대시보드 충돌)
 
-## ⚠️ 다음 작업 시 먼저 처리 (보안)
-- `supabase/schema_v2.sql` 하단의 **[보안 강화]** 주석 구문을 SQL Editor에서 실행해야 함.
-  (현재는 회원이 본인 profiles.status를 직접 바꿀 수 있는 허점이 있음 — 실제 모집 시작 전 필수)
-  적용 시 `app/admin/members`의 setStatus와 `app/actions.ts`의 withdrawMembership을
-  rpc(`admin_set_member_status`/`withdraw_self`) 호출로 함께 교체. (이번엔 SQL Editor 렌더링 장애로 미적용)
-- 테스트 계정 `test-kym@example.com`(withdrawn 처리됨)과 그 지원서 1건 정리 필요
+## ⚠️ 운영 시작 전 1회 실행 (관리자 지정 + 보안)
+- **`supabase/admin_and_security.sql`** 을 SQL Editor에서 실행:
+  ① 2jaeyong@gmail.com을 관리자로 지정 (사이트에서 먼저 회원가입 필요)
+  ② 보안 트리거(guard_profile_changes) — 회원의 status/role 자가변경 차단. **코드 변경 불필요**
+  (자동화 브라우저 세션에서 Supabase 대시보드 렌더링 장애로 미실행 — 사용자 브라우저에선 정상.
+   supabase.com 자동번역 끄고 실행)
+- 정리 대상 테스트 계정: `test-kym@example.com`, `smoke-prod@example.com` (둘 다 withdrawn 처리됨)
+  + test-kym 지원서 1건 — 관리자 로그인 후 /admin/applications 에서 삭제 가능
 
 ## TODO
 - [x] 회원가입/로그인/마이페이지/탈회
 - [x] 관리자 페이지 (회원 승인·접수 관리·콘텐츠 CRUD·설정)
 - [x] 공개 페이지 DB 전환 + 모집 D-day 배너 + 수료생 후기 섹션
 - [x] 개인정보처리방침·동의 체크박스·favicon·OG 메타
-- [ ] **위 보안 강화 SQL 적용** (최우선)
-- [ ] 관리자 첫 지정: 2jaeyong@gmail.com 가입 후 `update profiles set role='admin', status='approved' where email='2jaeyong@gmail.com';`
+- [ ] **`supabase/admin_and_security.sql` 실행** (관리자 지정 + 보안 트리거, 최우선)
 - [ ] 콘텐츠 실데이터 입력(관리자 페이지): 공지·채용·영상ID·갤러리·후기·모집일정·문의처
 - [ ] 개인정보처리방침 보존기간·책임자 실데이터 확정
 - [ ] (다음 단계) 매뉴얼 PDF, 카카오 로그인/채널, 모집 알림 이메일, FAQ 챗봇, 커스텀 도메인
