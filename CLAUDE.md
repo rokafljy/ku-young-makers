@@ -3,6 +3,7 @@
 ## 프로젝트 개요
 - 건국대 KU-KISM 운영, 2026 미래내일 일경험 지원사업 공식 홈페이지
 - 현재: Next.js(App Router, TS) 포털 v3 / 배포: Netlify (`netlify.toml`)
+- 저장소: https://github.com/rokafljy/ku-young-makers (main 브랜치, public)
 - v2 단일 HTML 프로토타입은 `legacy/index-v2.html`에 보존 (디자인 원본 참고용)
 - 개발: `npm run dev` (localhost:3000) / 빌드: `npm run build`
 
