@@ -35,7 +35,18 @@ git push        # ② 작업 끝: 올리기 → 1~2분 후 라이브 사이트 �
 > ⚠️ **작업 시작 전 `git pull`, 작업 후 `git push`를 습관화하세요.**
 > 두 컴퓨터에서 pull 없이 각자 수정하면 충돌이 발생합니다.
 
+## 관리자 페이지
+
+- 접속: 사이트 우측 상단 로그인 → 관리자 계정(2jaeyong@gmail.com)으로 로그인 → `/admin`
+- 기능: 회원 승인, 지원서·기업신청 관리(CSV 내보내기), 질문 답변,
+  콘텐츠 등록·수정·삭제·노출토글(공지/채용/영상/갤러리/수료생후기), 모집일정·문의처 설정
+- **최초 1회 관리자 지정**: 2jaeyong@gmail.com으로 회원가입한 뒤 Supabase SQL Editor에서
+  `update profiles set role='admin', status='approved' where email='2jaeyong@gmail.com';` 실행
+
+## 회원 흐름
+
+회원가입 → 운영자(관리자 페이지)에서 승인 → 로그인 후 지원서 제출 → 마이페이지에서 진행상태 확인
+
 ## 데이터 확인
 
-접수된 지원서·질문은 [Supabase 대시보드](https://supabase.com/dashboard/project/kypzebnhgtoldiiknmzq) → Table Editor에서 확인
-(`youth_applications` / `company_applications` / `questions`)
+접수 데이터는 관리자 페이지 또는 [Supabase 대시보드](https://supabase.com/dashboard/project/kypzebnhgtoldiiknmzq) → Table Editor에서 확인
